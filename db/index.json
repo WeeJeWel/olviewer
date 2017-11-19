@@ -1,0 +1,38 @@
+{
+	"layers": [
+		{
+			"type": "wms",
+			"id": "hoogtekaart",
+			"name": "Hoogtekaart",
+			"visible": false,
+			"opacity": 0.25,
+			"infoUrl": "layers/hoogtekaart/info.html",
+			"wms": {
+		        "url": "https://geodata.nationaalgeoregister.nl/ahn2/wms?",
+		        "params": {
+		            "LAYERS": "ahn2_5m"
+		        },
+		        "crossOrigin": "anonymous"
+			}
+		},
+		{
+			"type": "wms",
+			"id": "provincies",
+			"name": "Provincies",
+			"opacity": 0.5,
+			"legendUrl": "http://geodata.nationaalgeoregister.nl/cbsprovincies/ows?SERVICE=WMS&REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=cbsprovincies2012",
+			"wms": {
+			    "url": "http://geodata.nationaalgeoregister.nl/cbsprovincies/ows?SERVICE=WMS&",
+			    "params": {
+			        "LAYERS": "cbsprovincies2012"
+			    },
+			    "crossOrigin": "anonymous"
+			}
+		},
+		{
+			"id": "wegenkaart",
+			"type": "osm",
+			"name": "Wegenkaart"
+		}
+	]
+}

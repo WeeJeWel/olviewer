@@ -1,0 +1,207 @@
+* {
+	margin: 0;
+	padding: 0;
+	-webkit-user-select: none;
+}
+
+html,
+body {
+	height: 100%;
+	font-family: Helvetica, sans-serif;
+}
+
+.map {
+	position: absolute;
+	z-index: 0;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+
+.sidebar {
+	position: absolute;
+	z-index: 1;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	min-width: 300px;
+	width: 25%;
+	background: rgba(255,255,255,0.975);
+	box-shadow: -10px 0 10px rgba(0,0,0,0.1);
+	padding: 1em;
+}
+	.sidebar .section {
+
+	}
+		.sidebar .section .title {
+			padding: 0.5em 0;
+			text-align: center;
+			color: #333;
+			font-weight: 300;
+		}
+		.sidebar .section .content {
+			padding: 1em 0;
+		}
+
+
+	.sidebar .section.layers {
+		position: relative;
+	}
+		.sidebar .section.layers ul.layers {
+			list-style: none;
+		}
+			.sidebar .section.layers ul.layers li.layer {
+				position: relative;
+				border: 1px solid #ddd;
+				border-radius: 5px;
+				padding: 0.5em;
+				margin-bottom: 10px;
+
+				background: white;
+				box-shadow: 0 2px 2px rgba(0,0,0,0.03);
+
+				height: 30px;
+				transition: height 0.3s;
+			}
+			.sidebar .section.layers ul.layers li.ui-sortable-placeholder {
+				visibility: visible;
+				height: 30px;
+				background: red;
+			}
+			.sidebar .section.layers ul.layers li.expanded {
+				height: 60px;
+			}
+				.sidebar .section.layers ul.layers li .summary {
+					display: flex;
+					flex-direction: row;
+					align-items: center;
+					height: 30px;
+					padding: 0 0.25em;
+				}
+					.sidebar .section.layers ul.layers li input[type="checkbox"] {
+						margin-right: 0.75em;
+						flex-shrink: 0;
+					}
+					.sidebar .section.layers ul.layers li .name {
+						font-size: 0.85em;
+						flex-grow: 1;
+					}
+					.sidebar .section.layers ul.layers li input[type="checkbox"],
+					.sidebar .section.layers ul.layers li .name {
+						cursor: pointer;
+					}
+					.sidebar .section.layers ul.layers li .handle {
+						color: #ccc;
+						cursor: move;
+						margin-right: 0.75em;
+					}
+					.sidebar .section.layers ul.layers li .info {
+						color: #ccc;
+						cursor: pointer;
+						margin-right: 0.75em;
+					}
+					.sidebar .section.layers ul.layers li .slider {
+						color: #999;
+						cursor: pointer;
+					}
+					.sidebar .section.layers ul.layers li .handle,
+					.sidebar .section.layers ul.layers li .info,
+					.sidebar .section.layers ul.layers li .slider {
+						transition: all 0.2s;
+					}
+					.sidebar .section.layers ul.layers li .handle:hover,
+					.sidebar .section.layers ul.layers li .slider:hover,
+					.sidebar .section.layers ul.layers li .info:hover,
+					.sidebar .section.layers ul.layers li.expanded .slider {
+						color: #333;
+					}
+					.sidebar .section.layers ul.layers li input[type="range"] {
+						width: 100%;
+					}
+				.sidebar .section.layers ul.layers li .options {
+					padding: 0.5em;
+					opacity: 0;
+					visibility: hidden;
+					transition: all 0.3s;
+				}
+				.sidebar .section.layers ul.layers li.expanded .options {
+					opacity: 1;
+					visibility: visible;
+				}
+
+.legend {
+	position: absolute;
+	z-index: 2;
+	left: 1em;
+	bottom: 1em;
+	max-width: 25%;
+	max-height: 25%;
+	min-width: 100px;
+	min-height: 100px;
+	box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+
+	visibility: hidden;
+	opacity: 0;
+	transform: scale(0.95);
+	transform-origin: bottom left;
+	transition: all 0.3s;
+}
+.legend.visible {
+	visibility: visible;
+	opacity: 1;
+	transform: scale(1.0);
+}
+
+.popup-info {
+	position: absolute;
+	z-index: 5;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	background: rgba(0,0,0,0.75);
+
+	opacity: 0;
+	visibility: hidden;
+
+	transition: all 0.3s;
+}
+.popup-info.visible {
+	opacity: 1;
+	visibility: visible;
+}
+	.popup-info .content {
+		position: absolute;
+		z-index: 6;
+		background: white;
+		border-radius: 5px;
+		left: 10%;
+		top: 10%;
+		bottom: 10%;
+		right: 10%;
+		box-shadow: 0 20px 20px rgba(0,0,0,0.1);
+		padding: 1.5em;
+	}
+		.popup-info .content h1 {
+			font-weight: 400;
+			margin-bottom: 0.4em;
+		}
+	.popup-info .close {
+		position: absolute;
+		z-index: 6;
+		top: 10%;
+		right: 10%;
+		width: 1.6em;
+		height: 1.6em;
+		line-height: 1.7em;
+		margin-top: -0.8em;
+		margin-right: -0.8em;
+		color: white;
+		background: black;
+		border: 2px solid white;
+		border-radius: 100%;
+		text-align: center;
+		cursor: pointer;
+		box-shadow: 0 2px 2px rgba(0,0,0,0.1);
+	}
