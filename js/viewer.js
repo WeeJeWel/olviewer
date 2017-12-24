@@ -30,6 +30,11 @@ Viewer.prototype.loadDatabase = function( callback ) {
 
 Viewer.prototype.init = function(){
 
+	this._view = new ol.View({
+		center: ol.proj.transform([6.1552, 52.2661], 'EPSG:4326', 'EPSG:3857'), // Deventer, The Netherlands
+		zoom: 8
+	});
+
 	var layers = this._db.layers.map(function(layer, index){
 
 		var layerInstance;
@@ -129,7 +134,7 @@ Viewer.prototype.init = function(){
 			}.bind(this));
 		layerOptionsEl.appendChild(sliderEl);
 
-		layerInstance = this._layers[id] = new c({
+		layerInstance = new c({
 			id: id,
 			source: source
 		});
@@ -137,6 +142,11 @@ Viewer.prototype.init = function(){
 		layerInstance.setZIndex( this._db.layers.length - index );
 		layerInstance.setVisible( visible )
 		layerInstance.setOpacity( opacity );
+
+		this._layers[id] = {
+			instance: layerInstance,
+			source: source,
+		}
 
 		return layerInstance;
 
@@ -153,14 +163,64 @@ Viewer.prototype.init = function(){
 				collapsible: false
 			})
 		}),
-		view: new ol.View({
-			center: ol.proj.transform([6.1552, 52.2661], 'EPSG:4326', 'EPSG:3857'), // Deventer, The Netherlands
-			zoom: 8
-		})
+		view: this._view
 	});
+
+	this._map.on('singleclick', this._onSingleClick.bind(this));
+
 }
 
-Viewer.prototype._initSortable = function(){
+Viewer.prototype._onSingleClick = function(e) {
+
+	for( var layerId in this._layers ) {
+		(function(){
+			var layer = this._layers[layerId];
+			if( !layer.source.getGetFeatureInfoUrl ) return;
+			if( !layer.instance.getVisible() ) return;
+
+			var viewResolution = this._view.getResolution();
+
+			// HTML popup, less fancy
+			var url = layer.source.getGetFeatureInfoUrl(e.coordinate, viewResolution, 'EPSG:3857',	{
+				'INFO_FORMAT': 'text/html'
+			});
+			if( url ) window.open(url, 'popup-' + layerId, 'width=600,height=600');
+
+			// JSON popup, fancy but incomplete
+			/*
+			var url = layer.source.getGetFeatureInfoUrl(e.coordinate, viewResolution, 'EPSG:3857',	{
+				'INFO_FORMAT': 'application/json'
+			});
+			if( !url ) return;
+
+			$.getJSON(url, function(data){
+				if( !data ) return;
+
+				console.log('data', data)
+
+				// wtf coordinate system they're using?
+				// if( Array.isArray(data.features) ) {
+				//  data.features.forEach(function(feature){
+				//  	if( feature.geometry && feature.geometry.coordinates ) {
+				//  		var vector = new ol.layer.Vector({
+				//  			features: [
+				//  				new ol.Feature({
+				//  				    name: "Polygon",
+				//  				    geometry: new ol.geom.MultiPolygon( feature.geometry.coordinates )
+				//  				})
+				//  			]
+				//  		});
+				//  		this._map.addLayer(vector);
+				//  	}
+				//  }.bind(this));
+				// }
+			}.bind(this))
+			*/
+		}.bind(this))();
+	}
+}
+
+Viewer.prototype._initSortable = function() {
 	$(function(){
 		$(this._layersListEl).sortable({
 			handle: '.handle',
@@ -170,7 +230,7 @@ Viewer.prototype._initSortable = function(){
 		        $(e.target).sortable('toArray', {
 			        attribute: 'data-id'
 		        }).forEach(function(id, index){
-			        this._layers[id].setZIndex( Object.keys(this._layers).length - index );
+			        this._layers[id].instance.setZIndex( Object.keys(this._layers).length - index );
 		        }.bind(this));
 			}.bind(this)
 		})

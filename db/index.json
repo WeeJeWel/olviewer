@@ -2,6 +2,20 @@
 	"layers": [
 		{
 			"type": "wms",
+			"id": "wijk-buurt-cbs",
+			"name": "Wijk en Buurt CBS",
+			"visible": true,
+			"opacity": 1,
+			"wms": {
+				"url": "https://geodata.nationaalgeoregister.nl/wijkenbuurten2016/wms",
+				"params": {
+					"LAYERS": "cbs_buurten_2016"
+				},
+				"crossOrigin": "anonymous"
+			}
+		},
+		{
+			"type": "wms",
 			"id": "hoogtekaart",
 			"name": "Hoogtekaart",
 			"visible": false,
@@ -19,6 +33,7 @@
 			"type": "wms",
 			"id": "provincies",
 			"name": "Provincies",
+			"visible": false,
 			"opacity": 0.5,
 			"legendUrl": "http://geodata.nationaalgeoregister.nl/cbsprovincies/ows?SERVICE=WMS&REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=cbsprovincies2012",
 			"wms": {
