@@ -121,10 +121,10 @@ Viewer.prototype.init = function(){
 			sliderEl.step = 0.01;
 			sliderEl.value = opacity;
 			sliderEl.addEventListener('input', function(){
-				layerInstance.setOpacity( sliderEl.value );
+				layerInstance.setOpacity(Number(sliderEl.value));
 			}.bind(this));
 			sliderEl.addEventListener('change', function(){
-				layerInstance.setOpacity( sliderEl.value );
+				layerInstance.setOpacity(Number(sliderEl.value));
 				sliderEl.blur();
 			}.bind(this));
 		layerOptionsEl.appendChild(sliderEl);
